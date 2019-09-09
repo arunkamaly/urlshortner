@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="index">
+        <div class="container">
+            <div class="content">
+                <form method="POST" data-validate-username-url="{% url 'urlcreate' %}">
+                  {% csrf_token %}
+                  {{  form.as_p }}
+                  <button type="submit" id="submit" >Submit</button>
+                </form>
+            </div>
+        </div>
+        <br>
+        <div id="url">
+        
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascript %}
+  <script>
+    $("#submit").click(function (e) {
+      e.preventDefault();
+      var form = $(this).closest("form");
+      $.ajax({
+        url: form.attr("data-validate-username-url"),
+        data: form.serialize(),
+        dataType: 'json',
+        method:"POST",
+        success: function (data) {
+          console.log(data)
+          if (data.is_taken) {
+            alert(data.error_message);
+          }
+          $("#url").html("<p>Short URL is :<a target='_blank' href='"+data.shorturl+"'>"+data.shorturl+"</p>")
+
+        }
+      });
+    });
+  </script>
+{% endblock %}
+
+

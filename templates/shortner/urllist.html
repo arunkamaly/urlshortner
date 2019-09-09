@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}URL Shortner{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style/style.css">
+    <link href="/static/style/simple-sidebar.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="c-brand"> <img src=""  width="155"></div>
+    <div id="wrapper" class="toggled">
+
+    {% if user.is_authenticated %}
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                    </a>
+                </li>
+                <li><a href="{% url 'urllist' %}">Created URLs</a></li>
+                <li><a href="{% url 'urlcreate' %}">Add URL</a></li>
+                <li><a href="{% url 'logout' %}">logout</a></li>
+
+
+            </ul>
+        </div>
+    {% endif %}
+
+    <div id="page-content-wrapper">
+    
+    <section class="index">
+        <div class="container">
+            <h2 class="mb-4">Table</h2>
+            <table id="table_id" class="display">
+                <thead>
+                    <tr>
+                        <th>urlname</th>
+                        <th>Short URL</th>
+                        <th>created On</th>
+                        <th>updated On</th>
+                        <th>Full URL</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for article in object_list %}
+                    <tr>
+                        <td>{{ article.urlname}}</td>
+                        <td><a target="_blank" href='{{ article.shorturl}}'>{{ article.shorturl}}</td>
+                        <td>{{ article.createdOn |date:'Y-m-d H:i'}}</td>
+                        <td>{{ article.updatedOn |date:'Y-m-d H:i'}}</td>
+                        <td>{{ article.fullurl}}</td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    </div>
+
+    <!-- scripts -->
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <script src="/static/js/jquery.dataTables.min.js"></script>
+    <script src="/static/js/custome.js"></script>
+</body>
+
+</html>
